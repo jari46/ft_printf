@@ -6,7 +6,7 @@
 #    By: yehan <yehan@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/23 18:17:00 by yehan             #+#    #+#              #
-#    Updated: 2022/03/24 11:01:58 by yehan            ###   ########.fr        #
+#    Updated: 2022/03/24 16:58:54 by yehan            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,13 +25,11 @@ SRCS		:= \
 			ft_printf.c \
 			ft_printf_utils.c
 
-#OBJS	= $(join $(addprefix $(PRINTFDIR)/,$(dir $(SRCS))), $(notdir $(SRCS:.c=.o)))
-_SRCS		= $(addprefix ./ft_printf/, $(SRCS))
-OBJS		= $(_SRCS:.c=.o)
+OBJS		= $(addprefix $(PRINTFDIR)/,$(notdir $(SRCS:.c=.o)))
 
 .PHONY:		all clean fclean re bonus
 
-all:	$(NAME)
+all:		$(NAME)
 
 clean:
 			make clean -C $(LIBFTDIR)
