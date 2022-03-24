@@ -6,7 +6,7 @@
 /*   By: yehan <yehan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/24 08:52:33 by yehan             #+#    #+#             */
-/*   Updated: 2022/03/24 09:29:54 by yehan            ###   ########.fr       */
+/*   Updated: 2022/03/24 17:29:53 by yehan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,12 +80,9 @@ int	putnbr_fmt(char format, long long nbr)
 
 void	putnbr_fmt_ll(unsigned long long nbr, t_nbrfmt nbrfmt, int *cnt)
 {
-	char	*digit;
-
-	digit = "0123456789abcdef0123456789ABCDEF";
 	if (nbr < nbrfmt.base)
 	{
-		*cnt = *cnt + ft_putchr_cnt(digit[nbr + nbrfmt.capital]);
+		*cnt = *cnt + ft_putchr_cnt(DIGITS[nbr + nbrfmt.capital]);
 	}
 	else
 	{
@@ -96,12 +93,9 @@ void	putnbr_fmt_ll(unsigned long long nbr, t_nbrfmt nbrfmt, int *cnt)
 
 void	putnbr_fmt_i(unsigned int nbr, t_nbrfmt nbrfmt, int *cnt)
 {
-	char	*digit;
-
-	digit = "0123456789abcdef0123456789ABCDEF";
 	if (nbr < nbrfmt.base)
 	{
-		*cnt = *cnt + ft_putchr_cnt(digit[nbr + nbrfmt.capital]);
+		*cnt = *cnt + ft_putchr_cnt(DIGITS[nbr + nbrfmt.capital]);
 	}
 	else
 	{
