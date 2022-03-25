@@ -20,22 +20,22 @@
 # define DIGITS "0123456789abcdef0123456789ABCDEF"
 # define ALLTYPES "%cspdiuxX"
 # define HEXA "pxX"
-# define SIGNED "di"
 # define CAPITAL "X"
+# define SIGNED "di"
 # define INT "cdiuxX"
 # define LLONG "p"
 
-typedef struct s_nbrfmt
+typedef struct s_notation
 {
 	unsigned int	base;
 	int				capital;
-}	t_nbrfmt;
+}	t_notation;
 
 int		ft_printf(const char *format, ...);
-int		putarg_cnt(char format, va_list *ap);
-void	init_nbrfmt(char format, t_nbrfmt *nbrfmt);
-int		putnbr_fmt(char format, long long nbr);
-void	putnbr_fmt_ll(unsigned long long nbr, t_nbrfmt nbrfmt, int *cnt);
-void	putnbr_fmt_i(unsigned int nbr, t_nbrfmt nbrfmt, int *cnt);
+int		putarg_cnt(va_list *ap, char type);
+void	init_struct(t_notation *notation, char type);
+int		putnbr_type(long long nbr, char type);
+void	putnbr_llong(unsigned long long nbr, t_notation notation, int *cnt);
+void	putnbr_int(unsigned int nbr, t_notation notation, int *cnt);
 
 #endif

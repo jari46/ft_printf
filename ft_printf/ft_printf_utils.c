@@ -12,94 +12,94 @@
 
 #include "ft_printf.h"
 
-int	putarg_cnt(char format, va_list *ap)
+int	putarg_cnt(va_list *ap, char type)
 {
 	int			cnt;
 
 	cnt = 0;
-	if (format == '%')
+	if (type == '%')
 	{
 		cnt = ft_putchr_cnt('%');
 	}
-	else if (format == 'c')
+	else if (type == 'c')
 	{
 		cnt = ft_putchr_cnt(va_arg(*ap, int));
 	}
-	else if (format == 's')
+	else if (type == 's')
 	{
 		cnt = ft_putstr_cnt(va_arg(*ap, char *));
 	}
-	else if (format == 'p')
+	else if (type == 'p')
 	{
 		cnt = ft_putstr_cnt("0x")
-			+ putnbr_fmt(format, (long long)va_arg(*ap, void *));
+			+ putnbr_type(type, (long long)va_arg(*ap, void *));
 	}
 	else
 	{
-		cnt = putnbr_fmt(format, va_arg(*ap, int));
+		cnt = putnbr_type(type, va_arg(*ap, int));
 	}
 	return (cnt);
 }
 
-void	init_nbrfmt(char format, t_nbrfmt *nbrfmt)
+void	init_struct(t_notation *notation, char type)
 {
-	nbrfmt->base = 10;
-	nbrfmt->capital = 0;
-	if (ft_strchr(HEXA, format))
+	notation->base = 10;
+	notation->capital = 0;
+	if (ft_strchr(HEXA, type))
 	{
-		nbrfmt->base = 16;
+		notation->base = 16;
 	}
-	if (ft_strchr(CAPITAL, format))
+	if (ft_strchr(CAPITAL, type))
 	{
-		nbrfmt->capital = 16;
+		notation->capital = 16;
 	}
 }
 
-int	putnbr_fmt(char format, long long nbr)
+int	putnbr_type(long long nbr, char type)
 {
 	int			cnt;
-	t_nbrfmt	nbrfmt;
+	t_notation	notation;
 
 	cnt = 0;
-	init_nbrfmt(format, &nbrfmt);
-	if (ft_strchr(SIGNED, format) && nbr < 0)
+	init_struct(type, &notation);
+	if (ft_strchr(SIGNED, type) && nbr < 0)
 	{
 		cnt = cnt + ft_putchr_cnt('-');
 		nbr = -nbr;
 	}
-	if (ft_strchr(INT, format))
+	if (ft_strchr(INT, type))
 	{
-		putnbr_fmt_i(nbr, nbrfmt, &cnt);
+		putnbr_int(nbr, notation, &cnt);
 	}
-	else if (ft_strchr(LLONG, format))
+	else if (ft_strchr(LLONG, type))
 	{
-		putnbr_fmt_ll(nbr, nbrfmt, &cnt);
+		putnbr_llong(nbr, notation, &cnt);
 	}
 	return (cnt);
 }
 
-void	putnbr_fmt_ll(unsigned long long nbr, t_nbrfmt nbrfmt, int *cnt)
+void	putnbr_llong(unsigned long long nbr, t_notation notation, int *cnt)
 {
-	if (nbr < nbrfmt.base)
+	if (nbr < notation.base)
 	{
-		*cnt = *cnt + ft_putchr_cnt(DIGITS[nbr + nbrfmt.capital]);
+		*cnt = *cnt + ft_putchr_cnt(DIGITS[nbr + notation.capital]);
 	}
 	else
 	{
-		putnbr_fmt_ll(nbr / nbrfmt.base, nbrfmt, cnt);
-		putnbr_fmt_ll(nbr % nbrfmt.base, nbrfmt, cnt);
+		putnbr_llong(nbr / notation.base, notation, cnt);
+		putnbr_llong(nbr % notation.base, notation, cnt);
 	}
 }
 
-void	putnbr_fmt_i(unsigned int nbr, t_nbrfmt nbrfmt, int *cnt)
+void	putnbr_int(unsigned int nbr, t_notation notation, int *cnt)
 {
-	if (nbr < nbrfmt.base)
+	if (nbr < notation.base)
 	{
-		*cnt = *cnt + ft_putchr_cnt(DIGITS[nbr + nbrfmt.capital]);
+		*cnt = *cnt + ft_putchr_cnt(DIGITS[nbr + notation.capital]);
 	}
 	else
 	{
-		putnbr_fmt_i(nbr / nbrfmt.base, nbrfmt, cnt);
-		putnbr_fmt_i(nbr % nbrfmt.base, nbrfmt, cnt);
+		putnbr_int(nbr / notation.base, notation, cnt);
+		putnbr_int(nbr % notation.base, notation, cnt);
 	}
 }
