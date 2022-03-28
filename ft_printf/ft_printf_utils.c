@@ -6,7 +6,7 @@
 /*   By: yehan <yehan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/24 08:52:33 by yehan             #+#    #+#             */
-/*   Updated: 2022/03/24 17:29:53 by yehan            ###   ########.fr       */
+/*   Updated: 2022/03/28 11:40:06 by yehan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,11 @@ int	putarg_cnt(va_list *ap, char type)
 	else if (type == 'p')
 	{
 		cnt = ft_putstr_cnt("0x")
-			+ putnbr_type(type, (long long)va_arg(*ap, void *));
+			+ putnbr_type((long long)va_arg(*ap, void *), type);
 	}
 	else
 	{
-		cnt = putnbr_type(type, va_arg(*ap, int));
+		cnt = putnbr_type(va_arg(*ap, int), type);
 	}
 	return (cnt);
 }
@@ -61,7 +61,7 @@ int	putnbr_type(long long nbr, char type)
 	t_notation	notation;
 
 	cnt = 0;
-	init_struct(type, &notation);
+	init_struct(&notation, type);
 	if (ft_strchr(SIGNED, type) && nbr < 0)
 	{
 		cnt = cnt + ft_putchr_cnt('-');
@@ -71,14 +71,14 @@ int	putnbr_type(long long nbr, char type)
 	{
 		putnbr_int(nbr, notation, &cnt);
 	}
-	else if (ft_strchr(LLONG, type))
+	else if (ft_strchr(LONG, type))
 	{
-		putnbr_llong(nbr, notation, &cnt);
+		putnbr_long(nbr, notation, &cnt);
 	}
 	return (cnt);
 }
 
-void	putnbr_llong(unsigned long long nbr, t_notation notation, int *cnt)
+void	putnbr_long(unsigned long long nbr, t_notation notation, int *cnt)
 {
 	if (nbr < notation.base)
 	{
@@ -86,8 +86,8 @@ void	putnbr_llong(unsigned long long nbr, t_notation notation, int *cnt)
 	}
 	else
 	{
-		putnbr_llong(nbr / notation.base, notation, cnt);
-		putnbr_llong(nbr % notation.base, notation, cnt);
+		putnbr_long(nbr / notation.base, notation, cnt);
+		putnbr_long(nbr % notation.base, notation, cnt);
 	}
 }
 

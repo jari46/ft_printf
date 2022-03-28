@@ -6,7 +6,7 @@
 /*   By: yehan <yehan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/23 17:19:59 by yehan             #+#    #+#             */
-/*   Updated: 2022/03/24 08:56:50 by yehan            ###   ########.fr       */
+/*   Updated: 2022/03/28 11:39:46 by yehan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	ft_printf(const char *format, ...)
 		}
 		else if (*(format + 1) && ft_strchr(ALLTYPES, *(format + 1)))
 		{
-			cnt = cnt + putarg_cnt(*(format + 1), &ap);
+			cnt = cnt + putarg_cnt(&ap, *(format + 1));
 			format++;
 		}
 		format++;
