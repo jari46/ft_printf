@@ -6,7 +6,7 @@
 /*   By: yehan <yehan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/24 08:52:33 by yehan             #+#    #+#             */
-/*   Updated: 2022/03/28 11:40:06 by yehan            ###   ########.fr       */
+/*   Updated: 2022/03/28 13:38:25 by yehan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	putarg_cnt(va_list *ap, char type)
 	else if (type == 'p')
 	{
 		cnt = ft_putstr_cnt("0x")
-			+ putnbr_type((long long)va_arg(*ap, void *), type);
+			+ putnbr_type((long)va_arg(*ap, void *), type);
 	}
 	else
 	{
@@ -55,7 +55,7 @@ void	init_struct(t_notation *notation, char type)
 	}
 }
 
-int	putnbr_type(long long nbr, char type)
+int	putnbr_type(long nbr, char type)
 {
 	int			cnt;
 	t_notation	notation;
@@ -78,7 +78,7 @@ int	putnbr_type(long long nbr, char type)
 	return (cnt);
 }
 
-void	putnbr_long(unsigned long long nbr, t_notation notation, int *cnt)
+void	putnbr_long(unsigned long nbr, t_notation notation, int *cnt)
 {
 	if (nbr < notation.base)
 	{
