@@ -6,7 +6,7 @@
 /*   By: yehan <yehan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/24 08:52:33 by yehan             #+#    #+#             */
-/*   Updated: 2022/03/28 13:38:25 by yehan            ###   ########.fr       */
+/*   Updated: 2022/03/28 16:56:47 by yehan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,24 +41,10 @@ int	putarg_cnt(va_list *ap, char type)
 	return (cnt);
 }
 
-void	init_struct(t_notation *notation, char type)
-{
-	notation->base = 10;
-	notation->capital = 0;
-	if (ft_strchr(HEXA, type))
-	{
-		notation->base = 16;
-	}
-	if (ft_strchr(CAPITAL, type))
-	{
-		notation->capital = 16;
-	}
-}
-
 int	putnbr_type(long nbr, char type)
 {
-	int			cnt;
 	t_notation	notation;
+	int			cnt;
 
 	cnt = 0;
 	init_struct(&notation, type);
@@ -78,16 +64,17 @@ int	putnbr_type(long nbr, char type)
 	return (cnt);
 }
 
-void	putnbr_long(unsigned long nbr, t_notation notation, int *cnt)
+void	init_struct(t_notation *notation, char type)
 {
-	if (nbr < notation.base)
+	notation->base = 10;
+	notation->capital = 0;
+	if (ft_strchr(HEXA, type))
 	{
-		*cnt = *cnt + ft_putchr_cnt(DIGITS[nbr + notation.capital]);
+		notation->base = 16;
 	}
-	else
+	if (ft_strchr(CAPITAL, type))
 	{
-		putnbr_long(nbr / notation.base, notation, cnt);
-		putnbr_long(nbr % notation.base, notation, cnt);
+		notation->capital = 16;
 	}
 }
 
@@ -101,5 +88,18 @@ void	putnbr_int(unsigned int nbr, t_notation notation, int *cnt)
 	{
 		putnbr_int(nbr / notation.base, notation, cnt);
 		putnbr_int(nbr % notation.base, notation, cnt);
+	}
+}
+
+void	putnbr_long(unsigned long nbr, t_notation notation, int *cnt)
+{
+	if (nbr < notation.base)
+	{
+		*cnt = *cnt + ft_putchr_cnt(DIGITS[nbr + notation.capital]);
+	}
+	else
+	{
+		putnbr_long(nbr / notation.base, notation, cnt);
+		putnbr_long(nbr % notation.base, notation, cnt);
 	}
 }
