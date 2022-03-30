@@ -15,7 +15,7 @@
 int	ft_printf(const char *format, ...)
 {
 	va_list		ap;
-	int			cnt;
+	int			cnt; /* printf는 출력한 문자수를 리턴한다. */
 
 	va_start(ap, format);
 	cnt = 0;
@@ -25,6 +25,7 @@ int	ft_printf(const char *format, ...)
 		{
 			cnt = cnt + ft_putchr_cnt(*format);
 		}
+		/* '%'뒤가 유효한 타입일 때 진입한다. */
 		else if (*(format + 1) && ft_strchr(ALLTYPES, *(format + 1)))
 		{
 			cnt = cnt + putarg_cnt(&ap, *(format + 1));

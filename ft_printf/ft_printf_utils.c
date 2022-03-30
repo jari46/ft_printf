@@ -12,6 +12,8 @@
 
 #include "ft_printf.h"
 
+/* 허브의 역할. 인자와 타입을 받아, 타입 별로 맞는 함수로 넘겨준다. 
+** 크게 putchr, putstr, putnbr 3개 함수를 사용한다. */
 int	putarg_cnt(va_list *ap, char type)
 {
 	int			cnt;
@@ -41,6 +43,7 @@ int	putarg_cnt(va_list *ap, char type)
 	return (cnt);
 }
 
+/* 가장 큰 자료형에 우선 담는다 */
 int	putnbr_type(long nbr, char type)
 {
 	t_notation	notation;
@@ -48,11 +51,17 @@ int	putnbr_type(long nbr, char type)
 
 	cnt = 0;
 	init_struct(&notation, type);
+
+	/* 해당 type의 디폴트 자료형이 signed일 때 양수로 만든다. 
+	** 단 signed가 아닌데 음수로 들어온 경우는 그대로 진행한다 */
 	if (ft_strchr(SIGNED, type) && nbr < 0)
 	{
 		cnt = cnt + ft_putchr_cnt('-');
 		nbr = -nbr;
 	}
+
+	/* printf의 오버플로 언더플로를 흉내내기 위해,
+	** 디폴트 length(어떤 자료형으로 인식할지에 대한 필드)에 맞는 putnbr_*에 각각 넘겨준다. */
 	if (ft_strchr(INT, type))
 	{
 		putnbr_int(nbr, notation, &cnt);
@@ -64,6 +73,8 @@ int	putnbr_type(long nbr, char type)
 	return (cnt);
 }
 
+/* arg를 어떻게 '인식'할지에 대한 것은 바로 처리하고,
+** 어떻게 '표기notation'할 것인지에 대한 것은 구조체에 담는다. */
 void	init_struct(t_notation *notation, char type)
 {
 	notation->base = 10;
@@ -78,6 +89,7 @@ void	init_struct(t_notation *notation, char type)
 	}
 }
 
+/* 나눗셈을 한 번 거친 후 출력되기 때문에 INT_MIN도 언더플로우 없이 제대로 출력될 수 있다. */
 void	putnbr_int(unsigned int nbr, t_notation notation, int *cnt)
 {
 	if (nbr < notation.base)
